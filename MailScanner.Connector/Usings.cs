@@ -1,0 +1,10 @@
+﻿global using Pomelo.EntityFrameworkCore.MySql;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Options;
+global using MailScanner.Shared.DB;
+global using Microsoft.Extensions.Configuration;
+global using Serilog;
+global using MailKit;
+global using MailKit.Net.Imap;
+global using MailKit.Search;
+global using MimeKit;

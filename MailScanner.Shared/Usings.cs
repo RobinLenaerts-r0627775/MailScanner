@@ -1,0 +1,14 @@
+﻿global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Threading.Tasks;
+global using Microsoft.EntityFrameworkCore;
+global using Pomelo.EntityFrameworkCore.MySql;
+global using System.ComponentModel.DataAnnotations;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.Configuration.UserSecrets;
+global using Microsoft.Extensions.Configuration.EnvironmentVariables;
+global using Serilog;
+global using ILogger = Serilog.ILogger;
+global using MailScanner.Shared.DB;
+global using Microsoft.EntityFrameworkCore.Design;

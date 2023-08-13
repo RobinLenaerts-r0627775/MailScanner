@@ -1,3 +1,4 @@
 {
-    "dotnet.defaultSolution": "MailScanner.sln"
+    "dotnet.defaultSolution": "MailScanner.sln",
+    "sarif-viewer.connectToGithubCodeScanning": "off"
 }
