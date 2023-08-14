@@ -8,3 +8,4 @@ global using MailKit;
 global using MailKit.Net.Imap;
 global using MailKit.Search;
 global using MimeKit;
+global using MailScanner.Shared;
