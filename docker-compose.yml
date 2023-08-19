@@ -1,0 +1,9 @@
+
+version: '3.4'
+
+services:
+  mailscannerconnector:
+    image: mailscannerconnector
+    build:
+      context: .
+      dockerfile: MailScanner.Connector/Dockerfile

@@ -1,0 +1,13 @@
+
+version: '3.4'
+
+services:
+  mailscannerconnector:
+    image: mailscannerconnector
+    build:
+      context: .
+      dockerfile: MailScanner.Connector/Dockerfile
+      args:
+        - configuration=Debug
+    volumes:
+      - ~/.vsdbg:/remote_debugger:rw

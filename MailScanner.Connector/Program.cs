@@ -52,45 +52,5 @@ context.Database.Migrate();
 logger.Information("Migration done.");
 
 //Read mailbox
-using (var client = new ImapClient())
-{
-    client.Connect(configuration["IMAP_HOST"], 993, true);
-
-    client.Authenticate(configuration["IMAP_USER"], configuration["IMAP_PASSWORD"]);
-
-    //open archive folder
-
-    var archiveFolder = client.Inbox.GetSubfolder("Archive");
-    archiveFolder.Open(FolderAccess.ReadWrite);
-
-    // get last message
-    var uids = archiveFolder.Search(SearchQuery.SubjectContains("Invoice").Or(SearchQuery.SubjectContains("Factuur").Or(SearchQuery.SubjectContains("Rekening").Or(SearchQuery.BodyContains("Invoice").Or(SearchQuery.BodyContains("Factuur").Or(SearchQuery.BodyContains("Rekening")))))));
-
-    foreach (var uid in uids)
-    {
-        var message = client.Inbox.GetSubfolder("Archive").GetMessage(uid);
-        var invoice = new Invoice
-        {
-            Date = message.Date.Date,
-            Subject = message.Subject,
-            Body = message.TextBody,
-            Sender = message.From.ToString(),
-            Receiver = message.To.ToString(),
-
-        };
-        if (message.Attachments.Any())
-        {
-            foreach (var attachment in message.Attachments)
-            {
-                attachment.WriteTo($"D:\\{attachment.ContentDisposition.FileName}");
-                invoice.Attachments.Add(new Attachment
-                {
-                    AttachmentName = attachment.ContentDisposition.FileName,
-                    Attachmentlocation = $"D:\\{attachment.ContentDisposition.FileName}"
-                });
-            }
-            //flag the message as processed
-
-        }
-    }
-}
+var mailService = new MailService(context, logger, configuration);
+mailService.GetEmails();
