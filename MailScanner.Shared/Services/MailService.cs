@@ -12,7 +12,7 @@ public class MailService
         _configuration = configuration;
     }
 
-    public void GetEmails()
+    public void Run()
     {
 
         using var client = new ImapClient();
@@ -22,15 +22,29 @@ public class MailService
 
         //open archive folder
 
-        var archiveFolder = client.Inbox.GetSubfolder("Archive");
-        archiveFolder.Open(FolderAccess.ReadWrite);
+        var inboxFolder = client.Inbox;
+        inboxFolder.Open(FolderAccess.ReadWrite);
 
-        // get last message
-        var uids = archiveFolder.Search(SearchQuery.SubjectContains("Invoice").Or(SearchQuery.SubjectContains("Factuur").Or(SearchQuery.SubjectContains("Rekening").Or(SearchQuery.SubjectContains("Kasticket").Or(SearchQuery.BodyContains("Invoice").Or(SearchQuery.BodyContains("Factuur").Or(SearchQuery.BodyContains("Rekening").Or(SearchQuery.BodyContains("kasticket")))))))));
+        SearchQuery search = SearchQuery.SubjectContains("qwerqtewrtqwdsagsdga  q");
+        if (!_context.Keywords.Any())
+        {
+            var keyword = new Keyword
+            {
+                Value = "Kasticket"
+            };
+            _context.Keywords.Add(keyword);
+            _context.SaveChanges();
+        }
+        foreach (var keyword in _context.Keywords)
+        {
+            search = search.Or(SearchQuery.SubjectContains(keyword.Value).Or(SearchQuery.BodyContains(keyword.Value)));
+        }
+
+        var uids = inboxFolder.Search(search);
 
         foreach (var uid in uids)
         {
-            var message = client.Inbox.GetSubfolder("Archive").GetMessage(uid);
+            var message = inboxFolder.GetMessage(uid);
             var invoice = new Invoice
             {
                 Date = message.Date.Date,
@@ -44,15 +58,27 @@ public class MailService
             {
                 foreach (var attachment in message.Attachments)
                 {
-                    attachment.WriteTo($"D:\\{attachment.ContentDisposition.FileName}");
-                    invoice.Attachments.Add(new Attachment
+                    if (_configuration["FILE_LOCATION"] is null)
                     {
-                        AttachmentName = attachment.ContentDisposition.FileName,
-                        Attachmentlocation = $"D:\\{attachment.ContentDisposition.FileName}"
-                    });
+                        _logger.Information("FILE_LOCATION not set, add it to the environment variables please.");
+                        return;
+                    }
+                    using var stream = File.Create($"{_configuration["FILE_LOCATION"]}{attachment.ContentDisposition?.FileName}");
+                    if (attachment is MessagePart)
+                    {
+                        var part = (MessagePart)attachment;
+
+                        part.Message.WriteTo(stream);
+                    }
+                    else
+                    {
+                        var part = (MimePart)attachment;
+
+                        part.Content.DecodeTo(stream);
+                    }
                 }
                 //flag the message as processed
-
+                client.Inbox.AddFlags(uid, MessageFlags.UserDefined, true);
             }
         }
     }

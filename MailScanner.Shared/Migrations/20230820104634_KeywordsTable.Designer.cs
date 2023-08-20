@@ -3,6 +3,7 @@ using System;
 using MailScanner.Shared.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MailScanner.Shared.Migrations
 {
     [DbContext(typeof(MailScannerContext))]
-    partial class MailScannerContextModelSnapshot : ModelSnapshot
+    [Migration("20230820104634_KeywordsTable")]
+    partial class KeywordsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +52,7 @@ namespace MailScanner.Shared.Migrations
 
                     b.HasIndex("InvoiceId");
 
-                    b.ToTable("Attachments", (string)null);
+                    b.ToTable("Attachments");
                 });
 
             modelBuilder.Entity("MailScanner.Shared.Invoice", b =>
@@ -88,7 +91,7 @@ namespace MailScanner.Shared.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Invoices", (string)null);
+                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("MailScanner.Shared.Keyword", b =>
@@ -112,7 +115,7 @@ namespace MailScanner.Shared.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Keywords", (string)null);
+                    b.ToTable("Keywords");
                 });
 
             modelBuilder.Entity("MailScanner.Shared.Attachment", b =>

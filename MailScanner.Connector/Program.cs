@@ -3,7 +3,6 @@
 var builder = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
     .AddEnvironmentVariables();
-
 var configuration = builder.Build();
 
 //Setup Serilog
@@ -53,4 +52,4 @@ logger.Information("Migration done.");
 
 //Read mailbox
 var mailService = new MailService(context, logger, configuration);
-mailService.GetEmails();
+mailService.Run();
