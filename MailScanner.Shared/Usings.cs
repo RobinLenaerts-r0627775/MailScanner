@@ -14,3 +14,5 @@ global using MailKit;
 global using MailKit.Net.Imap;
 global using MailKit.Search;
 global using MimeKit;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

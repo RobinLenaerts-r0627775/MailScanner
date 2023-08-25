@@ -63,7 +63,8 @@ public class MailService
                         _logger.Information("FILE_LOCATION not set, add it to the environment variables please.");
                         return;
                     }
-                    using var stream = File.Create($"{_configuration["FILE_LOCATION"]}{attachment.ContentDisposition?.FileName}");
+                    var filePath = $"{_configuration["FILE_LOCATION"]}{attachment.ContentDisposition?.FileName}";
+                    using var stream = File.Create(filePath);
                     if (attachment is MessagePart)
                     {
                         var part = (MessagePart)attachment;
@@ -76,9 +77,15 @@ public class MailService
 
                         part.Content.DecodeTo(stream);
                     }
+                    invoice.Attachments.Add(new Attachment
+                    {
+                        AttachmentName = attachment.ContentDisposition?.FileName,
+                        Attachmentlocation = filePath
+                    });
                 }
-                //flag the message as processed
-                client.Inbox.AddFlags(uid, MessageFlags.UserDefined, true);
+                //move mail to archive/invoices folder
+                var invoicesFolder = inboxFolder.GetSubfolder("Archive").GetSubfolder("Invoices");
+                inboxFolder.MoveTo(uid, invoicesFolder);
             }
         }
     }

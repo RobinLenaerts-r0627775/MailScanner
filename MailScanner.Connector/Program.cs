@@ -52,4 +52,10 @@ logger.Information("Migration done.");
 
 //Read mailbox
 var mailService = new MailService(context, logger, configuration);
-mailService.Run();
+
+while (true)
+{
+    mailService.Run();
+    //sleep for 5 minutes
+    Thread.Sleep(300000);
+}

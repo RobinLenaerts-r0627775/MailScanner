@@ -1,6 +1,6 @@
 namespace MailScanner.Shared.DB;
 
-public class MailScannerContext : DbContext
+public class MailScannerContext : IdentityDbContext<User>
 {
 
     public DbSet<Invoice> Invoices { get; set; }
