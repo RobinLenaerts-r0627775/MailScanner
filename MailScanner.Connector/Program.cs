@@ -1,9 +1,9 @@
 ﻿//Add configuration with user secrets and environment variables
 
-var builder = new ConfigurationBuilder()
+var confBuilder = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
     .AddEnvironmentVariables();
-var configuration = builder.Build();
+var configuration = confBuilder.Build();
 
 //Setup Serilog
 var loggerConfig = new LoggerConfiguration()

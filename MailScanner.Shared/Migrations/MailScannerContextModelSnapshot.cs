@@ -49,7 +49,7 @@ namespace MailScanner.Shared.Migrations
 
                     b.HasIndex("InvoiceId");
 
-                    b.ToTable("Attachments");
+                    b.ToTable("Attachments", (string)null);
                 });
 
             modelBuilder.Entity("MailScanner.Shared.Invoice", b =>
@@ -88,7 +88,7 @@ namespace MailScanner.Shared.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Invoices");
+                    b.ToTable("Invoices", (string)null);
                 });
 
             modelBuilder.Entity("MailScanner.Shared.Keyword", b =>
@@ -112,7 +112,7 @@ namespace MailScanner.Shared.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Keywords");
+                    b.ToTable("Keywords", (string)null);
                 });
 
             modelBuilder.Entity("MailScanner.Shared.User", b =>

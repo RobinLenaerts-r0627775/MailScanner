@@ -1,7 +1,5 @@
 ﻿
-
 namespace MailScanner.Api;
-
 [ApiController]
 [Route("[controller]")]
 public class HomeController : Controller

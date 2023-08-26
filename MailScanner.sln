@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailScanner.Connector", "Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailScanner.Shared", "MailScanner.Shared\MailScanner.Shared.csproj", "{A5273676-5891-4904-8D3B-04BC559EDB37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailScanner.Frontend", "MailScanner.Frontend\MailScanner.Frontend.csproj", "{A91ADC3E-1334-4A5C-958C-DB309B90E906}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailScanner.Api", "MailScanner.Api\MailScanner.Api.csproj", "{041E4BC8-6301-4F4D-8835-DBC1FAD48EE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailScanner.Api", "MailScanner.Api\MailScanner.Api.csproj", "{9F23691B-D042-4F5B-861A-8663EE6E3C2A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailScanner.Frontend", "MailScanner.Frontend\MailScanner.Frontend.csproj", "{BFA89455-F84A-4665-9F8B-96FAA9D0F9B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,13 +28,13 @@ Global
 		{A5273676-5891-4904-8D3B-04BC559EDB37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5273676-5891-4904-8D3B-04BC559EDB37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5273676-5891-4904-8D3B-04BC559EDB37}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A91ADC3E-1334-4A5C-958C-DB309B90E906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A91ADC3E-1334-4A5C-958C-DB309B90E906}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A91ADC3E-1334-4A5C-958C-DB309B90E906}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A91ADC3E-1334-4A5C-958C-DB309B90E906}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9F23691B-D042-4F5B-861A-8663EE6E3C2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F23691B-D042-4F5B-861A-8663EE6E3C2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F23691B-D042-4F5B-861A-8663EE6E3C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F23691B-D042-4F5B-861A-8663EE6E3C2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{041E4BC8-6301-4F4D-8835-DBC1FAD48EE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{041E4BC8-6301-4F4D-8835-DBC1FAD48EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{041E4BC8-6301-4F4D-8835-DBC1FAD48EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{041E4BC8-6301-4F4D-8835-DBC1FAD48EE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFA89455-F84A-4665-9F8B-96FAA9D0F9B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFA89455-F84A-4665-9F8B-96FAA9D0F9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFA89455-F84A-4665-9F8B-96FAA9D0F9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFA89455-F84A-4665-9F8B-96FAA9D0F9B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

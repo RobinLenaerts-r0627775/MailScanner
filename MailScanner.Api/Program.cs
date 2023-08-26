@@ -1,18 +1,11 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using MailScanner.Shared.DB;
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("MailScannerContextConnection") ?? throw new InvalidOperationException("Connection string 'MailScannerContextConnection' not found.");
 
 var confBuilder = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
     .AddEnvironmentVariables();
 var configuration = confBuilder.Build();
 
-// Add services to the container.
-
 //Setup Serilog
-
 var loggerConfig = new LoggerConfiguration()
     .WriteTo.Console(outputTemplate:
         "[{Timestamp:HH:mm:ss} {Level}] {Message:lj}{NewLine}{Exception}");
@@ -22,22 +15,10 @@ if (!string.IsNullOrWhiteSpace(configuration["LogLocation"]))
         "[{Timestamp:dd:MM:yyyy - HH:mm:ss} {Level}] {Message:lj}{NewLine}{Exception}", rollingInterval: RollingInterval.Day);
 }
 var logger = loggerConfig.CreateLogger();
-
 builder.Services.AddSingleton<ILogger>(logger);
 
-builder.Services.AddScoped<MailService>();
-
-builder.Services.AddControllers();
-
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
-
-builder.Services.AddAuthorizationBuilder();
-
+//Setup mysql connection
+var optionsBuilder = new DbContextOptionsBuilder<MailScannerContext>();
 var dbHost = configuration["DB_HOST"];
 if (string.IsNullOrEmpty(dbHost))
 {
@@ -66,17 +47,26 @@ var connectionString = $"Server={dbHost};Port={dbPort};Database=MailScanner;Uid=
 
 builder.Services.AddDbContext<MailScannerContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MailScannerContext>();
 
 builder.Services.AddIdentityCore<User>()
-.AddEntityFrameworkStores<MailScannerContext>()
-.AddApiEndpoints();
+    .AddEntityFrameworkStores<MailScannerContext>()
+    .AddApiEndpoints();
+builder.Services.AddControllers();
+
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthorizationBuilder();
+
+// Add services to the container.
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var emailSender = new EmailSender(configuration, logger);
+
+//builder.Services.AddTransient<IEmailSender, EmailSender>(provider => emailSender);
+
 
 var app = builder.Build();
-
-app.MapIdentityApi<User>();
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -85,8 +75,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapControllers();
+
+app.MapIdentityApi<User>();
+
 app.UseHttpsRedirection();
 
-
 app.Run();
-
