@@ -1,9 +1,13 @@
 ﻿//Add configuration with user secrets and environment variables
 
+var services = new ServiceCollection();
+
 var confBuilder = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
     .AddEnvironmentVariables();
 var configuration = confBuilder.Build();
+
+
 
 //Setup Serilog
 var loggerConfig = new LoggerConfiguration()
@@ -46,13 +50,22 @@ var connectionString = $"Server={dbHost};Port={dbPort};Database=MailScanner;Uid=
 optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 var context = new MailScannerContext(optionsBuilder.Options);
 
+
 logger.Information("Starting migration...");
 context.Database.Migrate();
 logger.Information("Migration done.");
 
-//Read mailbox
-var mailService = new MailService(context, logger, configuration);
+//Add services
+services.AddSingleton<ILogger>(logger);
+services.AddDbContext<MailScannerContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+services.AddSingleton<IConfiguration>(configuration);
+services.AddTransient<MailService>();
 
+var provider = services.BuildServiceProvider();
+
+//Read mailbox
+var mailService = provider.GetService<MailService>();
 while (true)
 {
     mailService.Run();

@@ -1,5 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
+
 var confBuilder = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
     .AddEnvironmentVariables();
