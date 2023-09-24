@@ -7,3 +7,4 @@ global using Microsoft.AspNetCore.Authorization;
 global using MailScanner.Shared;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Identity.UI.Services;
+global using System.Security.Claims;

@@ -1,3 +1,5 @@
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -55,7 +57,12 @@ builder.Services.AddIdentityCore<User>()
 builder.Services.AddControllers();
 
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
-builder.Services.AddAuthorizationBuilder();
+//add authorization with roles
+builder.Services.AddAuthorizationCore(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+    options.AddPolicy("User", policy => policy.RequireClaim(ClaimTypes.Role, "User"));
+});
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

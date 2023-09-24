@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
-@* If refreshtoken saved *@
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -11,7 +13,34 @@
         </div>
 
         <article class="content px-4">
-            @Body
+            @if (await HasTokenAsync())
+            {
+                <CascadingValue Name="Token" Value="@GetTokenFromLocalStorageAsync().Result">
+                    @Body
+                </CascadingValue>
+            }
+            else
+            {
+                <RedirectToLogin />
+            }
         </article>
     </main>
 </div>
+
+@code {
+    private async Task<string> GetTokenFromLocalStorageAsync()
+    {
+        return await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+    }
+
+    private async Task<bool> HasTokenAsync()
+    {
+        var token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+        return !string.IsNullOrEmpty(token);
+    }
+
+    private void RedirectToLogin()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+}

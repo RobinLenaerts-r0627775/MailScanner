@@ -1,7 +1,22 @@
 ﻿@page "/"
-
+@inject HttpClient HttpClient
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+@code {
+    [CascadingParameter(Name = "Token")]
+    private string Token { get; set; }
+
+    private async Task MakeApiRequestAsync()
+    {
+        // Add the bearer token to the request headers
+        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+
+
+        // Handle the response
+        // ...
+    }
+}
