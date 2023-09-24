@@ -3,44 +3,38 @@
 @inject NavigationManager NavigationManager
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
+    <AuthorizeView>
+        <Authorized>
+            <main>
+                <div class="sidebar">
+                    <NavMenu />
+                </div>
+                <div class="top-row px-4">
+                    <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+                </div>
+
+                <article class="content px-4">
+                    @Body
+                </article>
+            </main>
+        </Authorized>
+        <NotAuthorized>
+            <article class="content px-4">
+                @Body
+            </article>
+        </NotAuthorized>
+    </AuthorizeView>
+    @* <div class="sidebar">
+    <NavMenu />
     </div>
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+    <div class="top-row px-4">
+    <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+    </div>
 
-        <article class="content px-4">
-            @if (await HasTokenAsync())
-            {
-                <CascadingValue Name="Token" Value="@GetTokenFromLocalStorageAsync().Result">
-                    @Body
-                </CascadingValue>
-            }
-            else
-            {
-                <RedirectToLogin />
-            }
-        </article>
-    </main>
+    <article class="content px-4">
+    @Body
+    </article>
+    </main> *@
 </div>
-
-@code {
-    private async Task<string> GetTokenFromLocalStorageAsync()
-    {
-        return await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
-    }
-
-    private async Task<bool> HasTokenAsync()
-    {
-        var token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
-        return !string.IsNullOrEmpty(token);
-    }
-
-    private void RedirectToLogin()
-    {
-        NavigationManager.NavigateTo("/login");
-    }
-}
