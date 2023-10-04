@@ -1,5 +1,8 @@
 
 
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -56,7 +59,8 @@ builder.Services.AddIdentityCore<User>()
     .AddApiEndpoints();
 builder.Services.AddControllers();
 
-builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthentication()
+.AddBearerToken(IdentityConstants.BearerScheme);
 //add authorization with roles
 builder.Services.AddAuthorizationCore(options =>
 {
@@ -69,9 +73,9 @@ builder.Services.AddAuthorizationCore(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var emailSender = new EmailSender(configuration, logger);
+var emailSender = new MailSender(configuration, logger);
 
-//builder.Services.AddTransient<IEmailSender, EmailSender>(provider => emailSender);
+builder.Services.AddTransient<IEmailSender, MailSender>(provider => emailSender);
 
 
 var app = builder.Build();
@@ -82,6 +86,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UsePathBase("/robinsapi");
 
 app.MapControllers();
 

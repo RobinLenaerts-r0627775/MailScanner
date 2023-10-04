@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿namespace MailScanner.Shared;
 
-namespace MailScanner.Shared;
-
-public class EmailSender// : IEmailSender
+public class MailSender : IEmailSender
 {
     public readonly IConfiguration _configuration;
     public readonly ILogger _logger;
 
-    public EmailSender(IConfiguration configuration, ILogger logger)
+    public MailSender(IConfiguration configuration, ILogger logger)
     {
         _configuration = configuration;
         _logger = logger;
@@ -25,7 +23,7 @@ public class EmailSender// : IEmailSender
         {
             //send email
             using var smtp = new SmtpClient();
-            smtp.Connect(_configuration["SMTP_HOST"], int.Parse(_configuration["SMTP_PORT"]));
+            smtp.Connect(_configuration["SMTP_HOST"], int.Parse(_configuration["SMTP_PORT"] ?? "465"));
             smtp.Authenticate(_configuration["SMTP_USER"], _configuration["SMTP_PASSWORD"]);
             var resp = smtp.Send(message);
             smtp.Disconnect(true);
