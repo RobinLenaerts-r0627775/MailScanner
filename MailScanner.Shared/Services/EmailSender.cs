@@ -1,15 +1,10 @@
 ﻿namespace MailScanner.Shared;
 
-public class MailSender : IEmailSender
+public class MailSender(IConfiguration configuration, ILogger logger) : IEmailSender
 {
-    public readonly IConfiguration _configuration;
-    public readonly ILogger _logger;
+    public readonly IConfiguration _configuration = configuration;
+    public readonly ILogger _logger = logger;
 
-    public MailSender(IConfiguration configuration, ILogger logger)
-    {
-        _configuration = configuration;
-        _logger = logger;
-    }
     public Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
         //implement mailing

@@ -1,8 +1,3 @@
-
-
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Options;
-
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -60,23 +55,33 @@ builder.Services.AddIdentityCore<User>()
 builder.Services.AddControllers();
 
 builder.Services.AddAuthentication()
-.AddBearerToken(IdentityConstants.BearerScheme);
+    .AddBearerToken(IdentityConstants.BearerScheme);
+
 //add authorization with roles
 builder.Services.AddAuthorizationCore(options =>
 {
-    options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+    options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, ["Admin", "User"]));
     options.AddPolicy("User", policy => policy.RequireClaim(ClaimTypes.Role, "User"));
 });
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    // options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    // {
+    //     Description = @"JWT Authorization header using the Bearer scheme. 
+    //         Enter 'Bearer' [space] and then your token in the text input below.
+    //         Example: 'Bearer 12345abcdef'",
+    //     Name = "Authorization",
+    //     In = ParameterLocation.Header,
+    //     Type = SecuritySchemeType.ApiKey,
+    //     Scheme = "Bearer"
+    // });
+});
 
-var emailSender = new MailSender(configuration, logger);
-
-builder.Services.AddTransient<IEmailSender, MailSender>(provider => emailSender);
-
+builder.Services.AddTransient<IEmailSender, MailSender>();
 
 var app = builder.Build();
 
@@ -86,8 +91,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UsePathBase("/robinsapi");
 
 app.MapControllers();
 

@@ -2,16 +2,10 @@
 
 
 [ApiController]
-public class UserController : ControllerBase
+// [Authorize]
+public class UserController(UserManager<User> userManager) : ControllerBase
 {
-
-    private readonly UserManager<User> _userManager;
-
-
-    public UserController(UserManager<User> userManager)
-    {
-        _userManager = userManager;
-    }
+    private readonly UserManager<User> _userManager = userManager;
 
     [HttpGet]
     [Route("api/users")]
