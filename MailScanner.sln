@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailScanner.AppHost", "temp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailScanner.ServiceDefaults", "temp.ServiceDefaults\MailScanner.ServiceDefaults.csproj", "{0159E86E-706B-4626-BFC3-6871B21BA1A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mailscanner.IdentityServer", "Mailscanner.IdentityServer\Mailscanner.IdentityServer.csproj", "{853A342B-E374-4A99-89DC-970CF3A98531}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailScanner.IdentityAPI", "MailScanner.IdentityAPI\MailScanner.IdentityAPI.csproj", "{03A0F93E-6721-420A-95C7-529E148C6B12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{0159E86E-706B-4626-BFC3-6871B21BA1A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0159E86E-706B-4626-BFC3-6871B21BA1A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0159E86E-706B-4626-BFC3-6871B21BA1A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{853A342B-E374-4A99-89DC-970CF3A98531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{853A342B-E374-4A99-89DC-970CF3A98531}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{853A342B-E374-4A99-89DC-970CF3A98531}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{853A342B-E374-4A99-89DC-970CF3A98531}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03A0F93E-6721-420A-95C7-529E148C6B12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03A0F93E-6721-420A-95C7-529E148C6B12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03A0F93E-6721-420A-95C7-529E148C6B12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03A0F93E-6721-420A-95C7-529E148C6B12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

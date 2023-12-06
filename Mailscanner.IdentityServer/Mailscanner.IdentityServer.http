@@ -1,0 +1,6 @@
+@Mailscanner.IdentityServer_HostAddress = http://localhost:5062
+
+GET {{Mailscanner.IdentityServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

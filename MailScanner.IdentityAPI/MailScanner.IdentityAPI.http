@@ -1,0 +1,6 @@
+@MailScanner.IdentityAPI_HostAddress = http://localhost:5241
+
+GET {{MailScanner.IdentityAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
