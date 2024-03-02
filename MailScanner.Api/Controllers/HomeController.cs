@@ -18,6 +18,12 @@ public class HomeController : Controller
         return Ok("Hello World!");
     }
 
+    [HttpGet("NotGood")]
+    public IActionResult NotGood()
+    {
+        throw new Exception("This is not good");
+    }
+
     // request that gets all invoices requires authorization
     [HttpGet("invoices")]
     [Authorize]

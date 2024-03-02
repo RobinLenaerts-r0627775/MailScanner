@@ -9,3 +9,5 @@ global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Identity.UI.Services;
 global using System.Security.Claims;
 global using Microsoft.OpenApi.Models;
+global using System.Net;
+global using MailScanner.Api;

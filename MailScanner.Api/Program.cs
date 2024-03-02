@@ -1,10 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
-
 var confBuilder = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
     .AddEnvironmentVariables();
 var configuration = confBuilder.Build();
+
+builder.Services.AddProblemDetails();
 
 //Setup Serilog
 var loggerConfig = new LoggerConfiguration()
@@ -17,37 +18,9 @@ if (!string.IsNullOrWhiteSpace(configuration["LogLocation"]))
 }
 var logger = loggerConfig.CreateLogger();
 builder.Services.AddSingleton<ILogger>(logger);
+builder.Services.AddExceptionHandler<ExceptionToProblemDetailsHandler>();
 
-//Setup mysql connection
-var optionsBuilder = new DbContextOptionsBuilder<MailScannerContext>();
-var dbHost = configuration["DB_HOST"];
-if (string.IsNullOrEmpty(dbHost))
-{
-    logger.Information("DB_HOST not set, add it to the environment variables please.");
-    return;
-}
-var dbPort = configuration["DB_PORT"];
-if (string.IsNullOrEmpty(dbPort))
-{
-    logger.Information("DB_PORT not set, using port 3306.");
-    dbPort = "3306";
-}
-var dbUser = configuration["DB_USER"];
-if (string.IsNullOrEmpty(dbUser))
-{
-    logger.Information("DB_USER not set, add it to the environment variables please.");
-    return;
-}
-var dbPassword = configuration["DB_PASSWORD"];
-if (string.IsNullOrEmpty(dbPassword))
-{
-    logger.Information("DB_PASSWORD not set, add it to the environment variables please.");
-    return;
-}
-var connectionString = $"Server={dbHost};Port={dbPort};Database=MailScanner;Uid={dbUser};Pwd={dbPassword};";
-
-builder.Services.AddDbContext<MailScannerContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-
+builder.SetupMySQLDatabaseConnection();
 
 builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<MailScannerContext>()
@@ -69,16 +42,16 @@ builder.Services.AddAuthorizationCore(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    // options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    // {
-    //     Description = @"JWT Authorization header using the Bearer scheme. 
-    //         Enter 'Bearer' [space] and then your token in the text input below.
-    //         Example: 'Bearer 12345abcdef'",
-    //     Name = "Authorization",
-    //     In = ParameterLocation.Header,
-    //     Type = SecuritySchemeType.ApiKey,
-    //     Scheme = "Bearer"
-    // });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = @"JWT Authorization header using the Bearer scheme. 
+            Enter 'Bearer' [space] and then your token in the text input below.
+            Example: 'Bearer 12345abcdef'",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
 });
 
 builder.Services.AddTransient<IEmailSender, MailSender>();
@@ -95,6 +68,9 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 
 app.MapIdentityApi<User>();
+
+app.UseStatusCodePages();
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MailScanner.Api\MailScanner.Api.csproj" />
     <ProjectReference Include="..\MailScanner.Frontend\MailScanner.Frontend.csproj" />
+    <ProjectReference Include="..\MailScanner.Connector\MailScanner.Connector.csproj" />
   </ItemGroup>
 
 </Project>
